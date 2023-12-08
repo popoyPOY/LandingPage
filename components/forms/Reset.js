@@ -33,6 +33,8 @@ export default function Reset( { navigation } ) {
                          right={ <TextInput.Icon icon="email" /> }/>
                     </View>
 
+                    <HelperText type="error">{errors.email}</HelperText>
+
                     <Button 
                          textColor={"black"}
                          buttonColor={"white"}

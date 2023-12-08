@@ -1,5 +1,6 @@
 import { Alert, View, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
 import { TextInput, Button, Text, HelperText } from "react-native-paper";
+import { Dialog, Portal } from 'react-native-paper';
 import { useState } from "react";
 import Header from '../Header';
 
@@ -7,22 +8,32 @@ import { Formik } from "formik";
 import * as Yup from 'yup'
 
 import CreateAccount from "../../functions/CreateAccount"
+import * as SecureStore from 'expo-secure-store';
 
 import { loginSchema } from "../../utils/Schema";
 
 import axios from "axios";
 
 
-async function emailLogin(email, password) {
-     const config = {
-          method: 'get',
-          url: "localhost:5006"
+async function test(credentials, navigation) {
+     const response =  await fetch('http://127.0.0.1:8000/v1/user/login', {method: 'POST', headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+     }, body: credentials
+})   
+     
+
+     const data = await response.json()
+
+     if(response.status == 200) {
+          await SecureStore.setItemAsync('token', data.token); 
+
+          return (navigation.replace('Home'))
      }
 
-     const response = await axios.post(config)
-
-     return response.data
+     if(response.status == 404) return Alert.alert(data.message);
 }
+
 
 
 export default function Login( { navigation } ) {
@@ -30,17 +41,16 @@ export default function Login( { navigation } ) {
      const [email, setEmail] = useState();
      const [password, setPassword] = useState();
      return (
+          
           <KeyboardAvoidingView style={style.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                <View style={{alignItems: 'center'}}>
                     <Image source={require('../../assets/cat-logo.png')} style={{height: 100, width: 400 }}></Image>
                     <Text variant="titleLarge" style={{fontWeight: "bold", marginBottom: 50}}>Cat</Text>
                </View>
-
                <View style={{marginTop: 10}}>
                <Formik
-                    onSubmit={(values) => {
-                         console.log(values)
-                         navigation.navigate('Home')
+                    onSubmit={ async (values) => {
+                         test(JSON.stringify(values), navigation)
                     }}
                     validationSchema={loginSchema}
                     initialValues={{email: "", password: ""}}>
@@ -48,6 +58,7 @@ export default function Login( { navigation } ) {
                     <View>
                          <View>
                               <TextInput 
+                                   autoCapitalize="none"
                                    activeOutlineColor={"#00BF63"}
                                    outlineColor={"black"}
                                    style={{width: 300}}

@@ -5,33 +5,36 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Board   from "../dashboard/Dashboard";
+import AddScreen from "../dashboard/AddCat";
 
-import Board   from "./Dashboard";
+import * as SecureStore from 'expo-secure-store';
 
 const Tab = createBottomTabNavigator();
 
 
+async function test() {
+     const response =  await fetch('http://127.0.0.1:8000/v1/user/me', {method: 'GET', headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer 27|QON1OHuOgIybkqqjFr8cIIdlbXTCMB5YpH1fY98r4e5ab85e'
+     }
+})   
+     
+     const data = await response.json()
+
+     console.log(data)
+}
+
+
+
 const HomeScreen = () => {
      return (
-       <View style={{backgroundColor: "#fff",
-       flex: 1,
-       justifyContent: "center",
-       alignItems: "center"}}>
+       <View >
          <Text>Home Screen</Text>
        </View>
      )
    }
 
-const AddScreen = () => {
-     return (
-       <View style={{backgroundColor: "#fff",
-       flex: 1,
-       justifyContent: "center",
-       alignItems: "center"}}>
-         <Text>Add Screen</Text>
-       </View>
-     )
-   }
 
    const Settings = () => {
      return (

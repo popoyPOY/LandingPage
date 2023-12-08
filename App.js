@@ -11,8 +11,8 @@ import Register  from './components/forms/Register';
 import Welcome  from './components/forms/Welcome';
 import Home from './components/forms/Home';
 import Reset from './components/forms/Reset';
-import Board from './components/forms/Dashboard';
-
+import Board from './components/dashboard/Dashboard';
+import AddScreen from './components/dashboard/AddCat';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +25,7 @@ export default function App() {
         <SafeAreaView style={styles.container}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName='Welcome' >
-            <Stack.Screen name='Welcome' component={Welcome} options={{headerShown: false}} />
+            <Stack.Screen name='Welcome' component={Home} options={{headerShown: false}} />
             <Stack.Screen name='Login' component={Login} options={{headerShown: false}} />
             <Stack.Screen name='Register' component={ Register} />
             <Stack.Screen name='Home' component={Home} options={{headerShown: false }} />

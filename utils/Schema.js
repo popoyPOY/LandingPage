@@ -9,7 +9,8 @@ const loginSchema = Yup.object().shape({
 
 
 const registerSchema = Yup.object().shape(
-     {
+     {    
+          name: Yup.string().required(),
           email: Yup.string().email().required().lowercase(),
           password: Yup.string().required('Password is required'),
           renter_password: Yup.string().required().oneOf([Yup.ref('password'), null], 'Passwords must match')
